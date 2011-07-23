@@ -1,0 +1,16 @@
+PATH
+  remote: .
+  specs:
+    hashr (0.0.1)
+
+GEM
+  remote: http://rubygems.org/
+  specs:
+    test_declarative (0.0.5)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  hashr!
+  test_declarative (>= 0.0.2)
