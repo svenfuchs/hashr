@@ -27,7 +27,7 @@ class Hashr < Hash
   end
 
   def method_missing(name, *args, &block)
-    case name.to_s[-1]
+    case name.to_s[-1, 1]
     when '?'
       !!self[name.to_s[0..-2].to_sym]
     when '='
