@@ -17,5 +17,6 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.rubyforge_project = '[none]'
 
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'test_declarative', '>=0.0.2'
 end
