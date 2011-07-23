@@ -36,16 +36,35 @@ class HashrTest < Test::Unit::TestCase
   end
 
   test 'defining defaults' do
-    klass = Class.new(Hashr)
-    klass.define(:foo => 'foo', :bar => { :baz => 'baz' })
+    klass = Class.new(Hashr) do
+      define :foo => 'foo', :bar => { :baz => 'baz' }
+    end
     assert_equal 'foo', klass.new.foo
     assert_equal 'baz', klass.new.bar.baz
   end
 
+  test 'defining different defaults on different classes ' do
+    foo = Class.new(Hashr) { define :foo => 'foo' }
+    bar = Class.new(Hashr) { define :bar => 'bar' }
+
+    assert_equal 'foo', foo.definition[:foo]
+    assert_equal 'bar', bar.definition[:bar]
+  end
+
+  test 'defining different env_namespaces on different classes ' do
+    foo = Class.new(Hashr) {extend Hashr::EnvDefaults; self.env_namespace = 'foo' }
+    bar = Class.new(Hashr) {extend Hashr::EnvDefaults; self.env_namespace = 'bar' }
+
+    assert_equal ['FOO'], foo.env_namespace
+    assert_equal ['BAR'], bar.env_namespace
+  end
+
   test 'defaults to env vars' do
-    klass = Class.new(Hashr)
-    klass.extend Hashr::EnvDefaults
-    klass.define(:foo => 'foo', :bar => { :baz => 'baz' })
+    klass = Class.new(Hashr) do
+      extend Hashr::EnvDefaults
+      self.env_namespace = 'worker'
+      define :foo => 'foo', :bar => { :baz => 'baz' }
+    end
 
     ENV['WORKER_FOO'] = 'env foo'
     ENV['WORKER_BAR_BAZ'] = 'env bar baz'
@@ -55,8 +74,9 @@ class HashrTest < Test::Unit::TestCase
   end
 
   test 'a key :_include includes the given modules' do
-    klass = Class.new(Hashr)
-    klass.define(:foo => { :_include => Module.new { def helper; 'helper'; end } })
+    klass = Class.new(Hashr) do
+      define :foo => { :_include => Module.new { def helper; 'helper'; end } }
+    end
     assert_equal 'helper', klass.new.foo.helper
   end
 end
