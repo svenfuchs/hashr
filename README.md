@@ -5,7 +5,7 @@ Hashr is a very simple and tiny class derived from Ruby's core Hash class which 
 It supports the following features:
 
 * method read and write access
-* automatic predicate (boolean, i.e. ?) methods
+* automatic predicate (boolean, i.e. `?`) methods
 * easy defaults
 * easy inclusion of modules into nested hashes
 * automatic symbolized keys
@@ -22,8 +22,8 @@ Directly use Hashr instances like this:
     config.foo.bar? # => true
     config.foo.bar  # => 'bar'
 
-    config.foo.bar = 'BAR'
-    config.foo.bar # => 'BAR'
+    config.foo.bar = 'bar!'
+    config.foo.bar # => 'bar!'
 
     config.foo.baz = 'baz'
     config.foo.baz # => 'baz'
@@ -34,7 +34,7 @@ Be aware that by default missing keys won't raise a method missing error but ins
     config.foo? # => false
     config.foo  # => nil
 
-You can make Hashr to raise an IndexError though like this:
+You can make Hashr to raise an `IndexError` though like this:
 
     Hashr.raise_missing_keys = true
     config = Hashr.new
