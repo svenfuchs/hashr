@@ -1,4 +1,4 @@
-![Build Status](https://secure.travis-ci.org/svenfuchs/hashr.png)
+[![Build Status](https://secure.travis-ci.org/svenfuchs/hashr.png)](http://travis-ci.org/svenfuchs/hashr)
 
 # Hashr
 
@@ -30,7 +30,7 @@ Directly use Hashr instances like this:
     config.foo.baz = 'baz'
     config.foo.baz # => 'baz'
 
-Be aware that by default missing keys won't raise a method missing error but instead behave like Hash access:
+Be aware that by default missing keys won't raise an exception but instead behave like Hash access:
 
     config = Hashr.new
     config.foo? # => false
