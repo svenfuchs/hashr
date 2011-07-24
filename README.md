@@ -98,3 +98,10 @@ You can run the tests as follows:
 
     # using just ruby
     ruby -rubygems -Ilib:test test/hashr_test.rb
+
+## Other libraries
+
+You also might want to check out OpenStruct and Hashie.
+
+* [OpenStruct](http://ruby-doc.org/stdlib/libdoc/ostruct/rdoc/classes/OpenStruct.html) does less but comes as a Ruby standard library.
+* [Hashie](https://github.com/intridea/hashie) has a bunch of support classes (like `Mash`, `Dash`, `Trash`) which all support different features that you might need.
