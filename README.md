@@ -107,3 +107,7 @@ You also might want to check out OpenStruct and Hashie.
 
 * [OpenStruct](http://ruby-doc.org/stdlib/libdoc/ostruct/rdoc/classes/OpenStruct.html) does less but comes as a Ruby standard library.
 * [Hashie](https://github.com/intridea/hashie) has a bunch of support classes (like `Mash`, `Dash`, `Trash`) which all support different features that you might need.
+
+## License
+
+[MIT License](https://github.com/svenfuchs/hashr/blob/master/MIT-LICENSE)

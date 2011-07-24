@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
   s.authors      = ["Sven Fuchs"]
   s.email        = "svenfuchs@artweb-design.de"
   s.homepage     = "http://github.com/svenfuchs/hashr"
-  s.summary      = "Simple Hash extension targetted at configuration"
-  s.description  = "Simple Hash extension targetted at configuration."
+  s.summary      = "Simple Hash extension to make working with nested hashes (e.g. for configuration) easier and less error-prone"
+  s.description  = "Simple Hash extension to make working with nested hashes (e.g. for configuration) easier and less error-prone."
 
   s.files        = Dir['{lib/**/*,test/**/*,[A-Z]*}']
   s.platform     = Gem::Platform::RUBY
