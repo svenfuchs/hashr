@@ -28,10 +28,18 @@ Directly use Hashr instances like this:
     config.foo.baz = 'baz'
     config.foo.baz # => 'baz'
 
-Be aware that these won't raise a method missing error but instead behave like Hash access.
+Be aware that by default missing keys won't raise a method missing error but instead behave like Hash access:
 
-    config.bar?     # => false
-    config.bar      # => nil
+    config = Hashr.new
+    config.foo? # => false
+    config.foo  # => nil
+
+You can make Hashr to raise an IndexError though like this:
+
+    Hashr.raise_missing_keys = true
+    config = Hashr.new
+    config.foo? # => false
+    config.foo  # => raises an IndexError "Key :foo is not defined."
 
 Derive a custom class to define defaults like this:
 
