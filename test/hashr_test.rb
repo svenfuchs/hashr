@@ -41,6 +41,24 @@ class HashrTest < Test::Unit::TestCase
     assert_equal false, Hashr.new({ :foo => { :bar => 'bar' } }).foo.baz?
   end
 
+  test 'mixing symbol and string keys in defaults and data' do
+    Symbolized  = Class.new(Hashr) { define :foo => 'foo' }
+    Stringified = Class.new(Hashr) { define 'foo' => 'foo' }
+    NoDefault   = Class.new(Hashr)
+
+    assert_equal 'foo', Symbolized.new.foo
+    assert_equal 'foo', Stringified.new.foo
+    assert_nil NoDefault.new.foo
+
+    assert_equal 'foo', Symbolized.new(:foo => 'foo').foo
+    assert_equal 'foo', Stringified.new(:foo => 'foo').foo
+    assert_equal 'foo', NoDefault.new(:foo => 'foo').foo
+
+    assert_equal 'foo', Symbolized.new('foo' => 'foo').foo
+    assert_equal 'foo', Stringified.new('foo' => 'foo').foo
+    assert_equal 'foo', NoDefault.new('foo' => 'foo').foo
+  end
+
   test 'method assignment works' do
     hashr = Hashr.new
     hashr.foo = 'foo'
@@ -94,6 +112,14 @@ class HashrTest < Test::Unit::TestCase
   end
 
   test 'a key :_include includes the given modules' do
+    klass = Class.new(Hashr) do
+      define :foo => { :_include => Module.new { def helper; 'helper'; end } }
+    end
+    hashr = klass.new(:foo => { 'helper' => 'foo' })
+    assert_equal 'helper', klass.new(:foo => { 'helper' => 'foo' }).foo.helper
+  end
+
+  test 'a key :_include includes the given modules (using defaults)' do
     klass = Class.new(Hashr) do
       define :foo => { :_include => Module.new { def helper; 'helper'; end } }
     end

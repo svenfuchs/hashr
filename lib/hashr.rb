@@ -1,3 +1,5 @@
+require 'hashr/core_ext/ruby/hash'
+
 class Hashr < Hash
   autoload :EnvDefaults, 'hashr/env_defaults'
 
@@ -7,7 +9,7 @@ class Hashr < Hash
     attr_accessor :raise_missing_keys
 
     def define(definition)
-      @definition = definition
+      @definition = definition.deep_symbolize_keys
     end
 
     def definition
@@ -15,13 +17,12 @@ class Hashr < Hash
     end
   end
 
-  def initialize(data = {})
-    include_modules(data.delete(:_include)) if data
-    replace(deep_hasherize(deep_merge(self.class.definition, data)))
+  def initialize(data = {}, definition = self.class.definition)
+    replace(deep_hashrize(definition.deep_merge(data.deep_symbolize_keys)))
   end
 
   def []=(key, value)
-    super(key, value.is_a?(Hash) ? self.class.new(value) : value)
+    super(key, value.is_a?(Hash) ? self.class.new(value, {}) : value)
   end
 
   def respond_to?(name)
@@ -40,24 +41,23 @@ class Hashr < Hash
     end
   end
 
+  def include_modules(modules)
+    Array(modules).each { |mod| meta_class.send(:include, mod) } if modules
+  end
+
+  def meta_class
+    class << self; self end
+  end
+
   protected
 
-    def include_modules(modules)
-      Array(modules).each { |mod| meta_class.send(:include, mod) } if modules
-    end
-
-    def meta_class
-      class << self; self end
-    end
-
-    def deep_merge(left, right)
-      merger = proc { |key, v1, v2| v1.is_a?(Hash) && v2.is_a?(Hash) ? self.class.new(v1.merge(v2, &merger)) : v2 }
-      left.merge(right || {}, &merger)
-    end
-
-    def deep_hasherize(hash)
+    def deep_hashrize(hash)
       hash.inject(TEMPLATE.dup) do |result, (key, value)|
-        result[key.to_sym] = value.is_a?(Hash) ? deep_hasherize(value) : value
+        if key.to_sym == :_include
+          result.include_modules(value)
+        else
+          result.store(key.to_sym, value.is_a?(Hash) ? deep_hashrize(value) : value)
+        end
         result
       end
     end
