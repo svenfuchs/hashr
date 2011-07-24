@@ -35,16 +35,12 @@ class Hashr < Hash
     when '='
       self[name.to_s[0..-2].to_sym] = args.first
     else
-      read(name)
+      raise(IndexError.new("Key #{name.inspect} is not defined.")) if !key?(name) && self.class.raise_missing_keys
+      self[name]
     end
   end
 
   protected
-
-    def read(key)
-      raise(IndexError.new("Key #{key.inspect} is not defined.")) if !key?(key) && self.class.raise_missing_keys
-      self[key]
-    end
 
     def include_modules(modules)
       Array(modules).each { |mod| meta_class.send(:include, mod) } if modules
