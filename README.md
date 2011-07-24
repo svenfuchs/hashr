@@ -1,3 +1,5 @@
+![Build Status](https://secure.travis-ci.org/svenfuchs/hashr.png)
+
 # Hashr
 
 Hashr is a very simple and tiny class derived from Ruby's core Hash class which makes using nested hashes for configuration (and other purposes) easier and less repetive and error prone.
