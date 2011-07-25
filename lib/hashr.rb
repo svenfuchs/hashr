@@ -18,7 +18,7 @@ class Hashr < Hash
   end
 
   def initialize(data = {}, definition = self.class.definition)
-    replace(deep_hashrize(definition.deep_merge(data.deep_symbolize_keys)))
+    replace(deep_hashrize(definition.deep_merge((data || {}).deep_symbolize_keys)))
   end
 
   def []=(key, value)

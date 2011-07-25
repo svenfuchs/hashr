@@ -5,6 +5,10 @@ class HashrTest < Test::Unit::TestCase
     Hashr.raise_missing_keys = false
   end
 
+  test 'initialize takes nil' do
+    assert_nothing_raised { Hashr.new(nil) }
+  end
+
   test 'method access on an existing key returns the value' do
     assert_equal 'foo', Hashr.new({ :foo => 'foo' }).foo
   end

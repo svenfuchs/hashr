@@ -36,7 +36,7 @@ Be aware that by default missing keys won't raise an exception but instead behav
     config.foo? # => false
     config.foo  # => nil
 
-You can make Hashr to raise an `IndexError` though like this:
+You can make Hashr raise an `IndexError` though like this:
 
     Hashr.raise_missing_keys = true
     config = Hashr.new
