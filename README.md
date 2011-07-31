@@ -43,10 +43,31 @@ You can make Hashr raise an `IndexError` though like this:
     config.foo? # => false
     config.foo  # => raises an IndexError "Key :foo is not defined."
 
-Derive a custom class to define defaults like this:
+You can also anonymously overwrite core Hash methods like this:
+
+    config = Hashr.new(:count => 3) do
+      def count
+        self[:count]
+      end
+    end
+    config.count # => 3
+
+And you can anonymously provide defaults like this:
+
+    data     = { :foo => 'foo' }
+    defaults = { :bar => 'bar' }
+    config   = Hashr.new(data, defaults)
+    config.foo # => 'foo'
+    config.bar # => 'bar'
+
+But you can obvioulsy also derive a custom class to define defaults and overwrite core Hash methods like this:
 
     class Config < Hashr
       define :foo => { :bar => 'bar' }
+
+      def count
+        self[:count]
+      end
     end
 
     config = Config.new
@@ -57,7 +78,7 @@ Include modules to nested hashes like this:
     class Config < Hashr
       module Boxes
         def count
-          self['count'] # overwrites a Hash method to return the Hash's content here
+          self[:count] # overwrites a Hash method to return the Hash's content here
         end
 
         def names
