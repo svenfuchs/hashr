@@ -129,5 +129,14 @@ class HashrTest < Test::Unit::TestCase
     end
     assert_equal 'helper', klass.new.foo.helper
   end
+
+  test 'anonymously overwriting core Hash methods' do
+    hashr = Hashr.new(:count => 5) do
+      def count
+        self[:count]
+      end
+    end
+    assert_equal 5, hashr.count
+  end
 end
 
