@@ -94,6 +94,26 @@ Include modules to nested hashes like this:
     config.boxes.count # => 3
     config.boxes.names # => ["box-1", "box-2", "box-3"]
 
+As overwriting Hash methods for method access to keys is a common pattern there's a short cut to it:
+
+    class Config < Hashr
+      define :_access => [:count, :key]
+    end
+
+    config = Config.new(:count => 3, :key => 'key')
+    config.count # => 3
+    config.key   # => 'key'
+
+Both `:_include` and `:_access` can be defined as defaults, i.e. so that they will be used on all nested hashes:
+
+    class Config < Hashr
+      default :_access => :key
+    end
+
+    config = Config.new(:key => 'key', :foo => { :key => 'foo.key' })
+    config.key     # => 'key'
+    config.foo.key # => 'foo.key'
+
 ## Environment defaults
 
 Hashr includes a simple module that makes it easy to overwrite configuration defaults from environment variables:

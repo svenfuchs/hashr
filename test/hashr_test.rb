@@ -130,6 +130,30 @@ class HashrTest < Test::Unit::TestCase
     assert_equal 'helper', klass.new.foo.helper
   end
 
+  test 'a key :_access includes an anonymous module with accessors' do
+    klass = Class.new(Hashr) do
+      define :foo => { :_access => [:key] }
+    end
+
+    assert_equal 'key', klass.new(:foo => { :key => 'key' }).foo.key
+  end
+
+  test 'all: allows to define :_include modules which will be included into all nested hashes' do
+    klass = Class.new(Hashr) do
+      default :_include => Module.new { def helper; 'helper'; end }
+    end
+    assert_equal 'helper', klass.new.helper
+    assert_equal 'helper', klass.new(:foo => { :bar => {} }).foo.bar.helper
+  end
+
+  test 'all: allows to define :_access which will include an anonymous module with accessors into all nested hashes' do
+    klass = Class.new(Hashr) do
+      default :_access => :key
+    end
+    assert_equal 'key', klass.new(:key => 'key').key
+    assert_equal 'key', klass.new(:foo => { :bar => { :key => 'key' } }).foo.bar.key
+  end
+
   test 'anonymously overwriting core Hash methods' do
     hashr = Hashr.new(:count => 5) do
       def count
