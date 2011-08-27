@@ -31,6 +31,10 @@ class Hashr < Hash
     (class << self; self; end).class_eval(&block) if block_given?
   end
 
+  def [](key)
+    super(key.to_sym)
+  end
+
   def []=(key, value)
     super(key, value.is_a?(Hash) ? self.class.new(value, {}) : value)
   end

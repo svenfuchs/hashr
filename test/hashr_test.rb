@@ -10,39 +10,47 @@ class HashrTest < Test::Unit::TestCase
   end
 
   test 'method access on an existing key returns the value' do
-    assert_equal 'foo', Hashr.new({ :foo => 'foo' }).foo
+    assert_equal 'foo', Hashr.new(:foo => 'foo').foo
   end
 
   test 'method access on a non-existing key returns nil when raise_missing_keys is false' do
     Hashr.raise_missing_keys = false
-    assert_nil Hashr.new({ :foo => 'foo' }).bar
+    assert_nil Hashr.new(:foo => 'foo').bar
   end
 
   test 'method access on a non-existing key raises an IndexError when raise_missing_keys is true' do
     Hashr.raise_missing_keys = true
-    assert_raises(IndexError) { Hashr.new({ :foo => 'foo' }).bar }
+    assert_raises(IndexError) { Hashr.new(:foo => 'foo').bar }
   end
 
   test 'method access on an existing nested key returns the value' do
-    assert_equal 'bar', Hashr.new({ :foo => { :bar => 'bar' } }).foo.bar
+    assert_equal 'bar', Hashr.new(:foo => { :bar => 'bar' }).foo.bar
   end
 
   test 'method access on a non-existing nested key returns nil when raise_missing_keys is false' do
     Hashr.raise_missing_keys = false
-    assert_nil Hashr.new({ :foo => { :bar => 'bar' } }).foo.baz
+    assert_nil Hashr.new(:foo => { :bar => 'bar' }).foo.baz
   end
 
   test 'method access on a non-existing nested key raises an IndexError when raise_missing_keys is true' do
     Hashr.raise_missing_keys = true
-    assert_raises(IndexError) { Hashr.new({ :foo => { :bar => 'bar' } }).foo.baz }
+    assert_raises(IndexError) { Hashr.new(:foo => { :bar => 'bar' }).foo.baz }
   end
 
   test 'method access with a question mark returns true if the key has a value' do
-    assert_equal true, Hashr.new({ :foo => { :bar => 'bar' } }).foo.bar?
+    assert_equal true, Hashr.new(:foo => { :bar => 'bar' }).foo.bar?
   end
 
   test 'method access with a question mark returns false if the key does not have a value' do
-    assert_equal false, Hashr.new({ :foo => { :bar => 'bar' } }).foo.baz?
+    assert_equal false, Hashr.new(:foo => { :bar => 'bar' }).foo.baz?
+  end
+
+  test 'hash access is indifferent about symbols/strings (string data given, symbol keys used)' do
+    assert_equal 'bar', Hashr.new('foo' => { 'bar' => 'bar' })[:foo][:bar]
+  end
+
+  test 'hash access is indifferent about symbols/strings (symbol data given, string keys used)' do
+    assert_equal 'bar', Hashr.new(:foo => { :bar => 'bar' })['foo']['bar']
   end
 
   test 'mixing symbol and string keys in defaults and data' do
