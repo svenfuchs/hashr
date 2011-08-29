@@ -10,12 +10,21 @@ class Hash
   end unless Hash.method_defined?(:except)
 
   def deep_symbolize_keys
-    inject({}) { |result, (key, value)|
-      value = value.deep_symbolize_keys if value.is_a?(Hash)
-      result[(key.to_sym rescue key) || key] = value
+     symbolizer = lambda do |value|
+      case value
+      when Hash
+        value.deep_symbolize_keys
+      when Array
+        value.map { |value| symbolizer.call(value) }
+      else
+        value
+      end
+    end
+    inject({}) do |result, (key, value)|
+      result[(key.to_sym rescue key) || key] = symbolizer.call(value)
       result
-    }
-  end unless Hash.method_defined?(:deep_symbolize_keys)
+    end
+  end
 
   # deep_merge_hash! by Stefan Rusterholz, see http://www.ruby-forum.com/topic/142809
   def deep_merge(other)
