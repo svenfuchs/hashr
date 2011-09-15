@@ -146,6 +146,14 @@ class HashrTest < Test::Unit::TestCase
     assert_equal 'key', klass.new(:foo => { :key => 'key' }).foo.key
   end
 
+  test 'defining defaults always also makes sure an accessor is used' do
+    klass = Class.new(Hashr) do
+      define :foo => { :default => 'default' }
+    end
+
+    assert_equal 'default', klass.new().foo.default
+  end
+
   test 'all: allows to define :_include modules which will be included into all nested hashes' do
     klass = Class.new(Hashr) do
       default :_include => Module.new { def helper; 'helper'; end }

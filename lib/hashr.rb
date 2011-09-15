@@ -9,7 +9,7 @@ class Hashr < Hash
     attr_accessor :raise_missing_keys
 
     def define(definition)
-      @definition = definition.deep_symbolize_keys
+      @definition = deep_accessorize(definition.deep_symbolize_keys)
     end
 
     def definition
@@ -17,11 +17,21 @@ class Hashr < Hash
     end
 
     def default(defaults)
-      @defaults = defaults
+      @defaults = deep_accessorize(defaults)
     end
 
     def defaults
       @defaults ||= {}
+    end
+
+    def deep_accessorize(hash)
+      hash.each do |key, value|
+        next unless value.is_a?(Hash)
+        value[:_access] ||= []
+        value[:_access] = Array(value[:_access])
+        value.keys.each { |key| value[:_access] << key if value.respond_to?(key) }
+        deep_accessorize(value)
+      end
     end
   end
 
@@ -92,9 +102,11 @@ class Hashr < Hash
           hash.include_accessors(value)
         end
       end
+
       hash.each do |key, value|
         deep_defaultize(value) if value.is_a?(Hash)
       end
+
       hash
     end
 end
