@@ -77,6 +77,13 @@ class Hashr < Hash
     class << self; self end
   end
 
+  def to_hash
+    inject({}) do |hash, (key, value)|
+      hash[key] = value.is_a?(Hashr) ? value.to_hash : value
+      hash
+    end
+  end
+
   protected
 
     def deep_hashrize(hash)

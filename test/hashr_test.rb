@@ -178,5 +178,13 @@ class HashrTest < Test::Unit::TestCase
     end
     assert_equal 5, hashr.count
   end
+
+  test 'to_hash converts the Hashr instance and all of its children to Hashes' do
+    hash = Hashr.new(:foo => { :bar => { :baz => 'baz' } }).to_hash
+
+    assert hash.instance_of?(Hash)
+    assert hash[:foo].instance_of?(Hash)
+    assert hash[:foo][:bar].instance_of?(Hash)
+  end
 end
 
