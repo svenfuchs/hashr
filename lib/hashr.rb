@@ -46,7 +46,7 @@ class Hashr < Hash
   end
 
   def []=(key, value)
-    super(key, value.is_a?(Hash) ? self.class.new(value, {}) : value)
+    super(key.to_sym, value.is_a?(Hash) ? self.class.new(value, {}) : value)
   end
 
   def respond_to?(name)

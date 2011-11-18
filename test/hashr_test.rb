@@ -77,6 +77,18 @@ class HashrTest < Test::Unit::TestCase
     assert_equal 'foo', hashr.foo
   end
 
+  test 'method using a string key works' do
+    hashr = Hashr.new
+    hashr['foo'] = 'foo'
+    assert_equal 'foo', hashr.foo
+  end
+
+  test 'using a symbol key works' do
+    hashr = Hashr.new
+    hashr[:foo] = 'foo'
+    assert_equal 'foo', hashr.foo
+  end
+
   test 'defining defaults' do
     klass = Class.new(Hashr) do
       define :foo => 'foo', :bar => { :baz => 'baz' }
