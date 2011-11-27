@@ -198,5 +198,11 @@ class HashrTest < Test::Unit::TestCase
     assert hash[:foo].instance_of?(Hash)
     assert hash[:foo][:bar].instance_of?(Hash)
   end
+
+  test 'set sets a dot separated path to nested hashes' do
+    hashr = Hashr.new(:foo => { :bar => 'bar' })
+    hashr.set('foo.baz', 'baz')
+    assert_equal 'baz', hashr.foo.baz
+  end
 end
 

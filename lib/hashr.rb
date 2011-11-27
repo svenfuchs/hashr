@@ -41,12 +41,18 @@ class Hashr < Hash
     (class << self; self; end).class_eval(&block) if block_given?
   end
 
-  def [](key)
+  def [](key, default = nil)
+    store(key.to_sym, Hashr.new(default)) if default && !key?(key)
     super(key.to_sym)
   end
 
   def []=(key, value)
     super(key.to_sym, value.is_a?(Hash) ? self.class.new(value, {}) : value)
+  end
+
+  def set(path, value, stack = [])
+    tokens = path.to_s.split('.')
+    tokens.size == 1 ? self[path] = value : self[tokens.shift, Hashr.new].set(tokens.join('.'), value, stack)
   end
 
   def respond_to?(name)
@@ -117,4 +123,3 @@ class Hashr < Hash
       hash
     end
 end
-
