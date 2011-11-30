@@ -35,6 +35,8 @@ class Hashr < Hash
     end
   end
 
+  undef :id if method_defined?(:id) # undefine deprecated method #id on 1.8.x
+
   def initialize(data = {}, definition = self.class.definition, &block)
     replace((deep_hashrize(definition.deep_merge((data || {}).deep_symbolize_keys))))
     deep_defaultize(self)

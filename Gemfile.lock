@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hashr (0.0.17)
+    hashr (0.0.18)
 
 GEM
   remote: http://rubygems.org/
