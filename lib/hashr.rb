@@ -57,7 +57,7 @@ class Hashr < Hash
     tokens.size == 1 ? self[path] = value : self[tokens.shift, Hashr.new].set(tokens.join('.'), value, stack)
   end
 
-  def respond_to?(name)
+  def respond_to?(*args)
     true
   end
 
