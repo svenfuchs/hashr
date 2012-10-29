@@ -57,8 +57,12 @@ class Hashr < Hash
     tokens.size == 1 ? self[path] = value : self[tokens.shift, Hashr.new].set(tokens.join('.'), value, stack)
   end
 
-  def respond_to?(*args)
-    true
+  def respond_to?(method)
+    if self.class.raise_missing_keys
+      key?(method)
+    else
+      true
+    end
   end
 
   def method_missing(name, *args, &block)

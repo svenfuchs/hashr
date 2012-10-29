@@ -89,6 +89,25 @@ class HashrTest < Test::Unit::TestCase
     assert_equal 'foo', hashr.foo
   end
 
+  test 'respond_to? returns true if raise_missing_keys is off' do
+    Hashr.raise_missing_keys = false
+    hashr = Hashr.new
+    assert hashr.respond_to?(:foo)
+  end
+
+  test 'respond_to? returns false for missing keys if raise_missing_keys is on' do
+    Hashr.raise_missing_keys = true
+    hashr = Hashr.new
+    assert_equal false, hashr.respond_to?(:foo)
+  end
+
+  test 'respond_to? returns true for extant keys if raise_missing_keys is on' do
+    Hashr.raise_missing_keys = true
+    hashr = Hashr.new
+    hashr[:foo] = 'bar'
+    assert hashr.respond_to?(:foo)
+  end
+
   test 'defining defaults' do
     klass = Class.new(Hashr) do
       define :foo => 'foo', :bar => { :baz => 'baz' }
