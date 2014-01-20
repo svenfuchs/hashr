@@ -1,4 +1,6 @@
 require 'hashr/core_ext/ruby/hash'
+require 'hashr/core_ext/ruby/true_class'
+require 'hashr/core_ext/ruby/false_class'
 
 class Hashr < Hash
   autoload :EnvDefaults, 'hashr/env_defaults'
