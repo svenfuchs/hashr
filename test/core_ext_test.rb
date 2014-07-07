@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class CoreExtTest < Test::Unit::TestCase
+class CoreExtTest < Minitest::Test
   test 'Hash#deep_symbolize_keys walks arrays, too' do
     hash     = { 'foo' => [{ 'bar' => 'bar', 'baz' => { 'buz' => 'buz' } }] }
     expected = { :foo  => [{ :bar  => 'bar', :baz  => { :buz  => 'buz' } }] }
