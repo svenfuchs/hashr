@@ -1,4 +1,4 @@
 require 'bundler/setup'
-require 'test/unit'
+require 'minitest/autorun'
 require 'test_declarative'
 require 'hashr'

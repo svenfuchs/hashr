@@ -1,12 +1,12 @@
 require 'test_helper'
 
-class HashrTest < Test::Unit::TestCase
+class HashrTest < Minitest::Test
   def teardown
     Hashr.raise_missing_keys = false
   end
 
   test 'initialize takes nil' do
-    assert_nothing_raised { Hashr.new(nil) }
+    Hashr.new(nil)
   end
 
   test 'method access on an existing key returns the value' do

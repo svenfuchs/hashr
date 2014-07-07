@@ -1,11 +1,12 @@
 PATH
   remote: .
   specs:
-    hashr (0.0.20)
+    hashr (0.0.22)
 
 GEM
   remote: http://rubygems.org/
   specs:
+    minitest (5.3.4)
     rake (0.9.2)
     test_declarative (0.0.5)
 
@@ -15,5 +16,6 @@ PLATFORMS
 
 DEPENDENCIES
   hashr!
+  minitest (>= 5.0.0)
   rake
   test_declarative (>= 0.0.2)
