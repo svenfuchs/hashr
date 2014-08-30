@@ -4,7 +4,7 @@ PATH
     hashr (0.0.22)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     minitest (5.3.4)
     rake (0.9.2)
