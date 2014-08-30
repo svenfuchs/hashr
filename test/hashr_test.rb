@@ -9,6 +9,10 @@ class HashrTest < Minitest::Test
     Hashr.new(nil)
   end
 
+  test 'initialize raises an ArgumentError when given a string' do
+    assert_raises(ArgumentError) { Hashr.new("foo") }
+  end
+
   test 'method access on an existing key returns the value' do
     assert_equal 'foo', Hashr.new(:foo => 'foo').foo
   end
@@ -224,4 +228,3 @@ class HashrTest < Minitest::Test
     assert_equal 'baz', hashr.foo.baz
   end
 end
-
