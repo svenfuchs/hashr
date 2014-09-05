@@ -27,6 +27,11 @@ class HashrTest < Minitest::Test
     assert_raises(IndexError) { Hashr.new(:foo => 'foo').bar }
   end
 
+  test 'method access on a non-existing key raises a FooError when raise_missing_keys is FooError' do
+    Hashr.raise_missing_keys = FooError
+    assert_raises(FooError) { Hashr.new(:foo => 'foo').bar }
+  end
+
   test 'method access on an existing nested key returns the value' do
     assert_equal 'bar', Hashr.new(:foo => { :bar => 'bar' }).foo.bar
   end

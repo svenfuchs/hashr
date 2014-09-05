@@ -5,6 +5,30 @@ class Hashr < Hash
 
   TEMPLATE = new
 
+  class Keys
+    def initialize(hash)
+      @hash, @raise_missing = hash, hash.class.raise_missing_keys
+    end
+
+    def self.for(hash)
+      new(hash)
+    end
+
+    def fetch!(name)
+      if !@hash.key?(name) && @raise_missing
+        error_class = @raise_missing.is_a?(Class) ? @raise_missing : IndexError
+        raise(error_class.new("Key #{name.inspect} is not defined."))
+      else
+        @hash[name]
+      end
+    end
+
+    def respond_to?(method)
+      @raise_missing ? @hash.key?(method) : true
+    end
+
+  end
+
   class << self
     attr_accessor :raise_missing_keys
 
@@ -59,11 +83,7 @@ class Hashr < Hash
   end
 
   def respond_to?(method)
-    if self.class.raise_missing_keys
-      key?(method)
-    else
-      true
-    end
+    Keys.for(self).respond_to?(method)
   end
 
   def method_missing(name, *args, &block)
@@ -73,8 +93,7 @@ class Hashr < Hash
     when '='
       self[name.to_s[0..-2].to_sym] = args.first
     else
-      raise(IndexError.new("Key #{name.inspect} is not defined.")) if !key?(name) && self.class.raise_missing_keys
-      self[name]
+      Keys.for(self).fetch!(name)
     end
   end
 
