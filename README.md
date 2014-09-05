@@ -43,6 +43,14 @@ You can make Hashr raise an `IndexError` though like this:
     config.foo? # => false
     config.foo  # => raises an IndexError "Key :foo is not defined."
 
+Or you can set a custom error class like this:
+    class CustomError < StandardError; ;end
+
+    Hashr.raise_missing_keys = CustomError
+    config = Hashr.new
+    config.foo?  # => false
+    config.foo   # => raises a CustomError "Key :foo is not defined."
+
 You can also anonymously overwrite core Hash methods like this:
 
     config = Hashr.new(:count => 3) do
