@@ -13,7 +13,7 @@ class Hashr < Hash
     def fetch!(name)
       if !@hashr.key?(name) && @raise_missing
         error_class = @raise_missing.is_a?(Class) ? @raise_missing : IndexError
-        raise(error_class.new("Key #{name.inspect} is not defined."))
+        raise(error_class.new("Key #{name.inspect} is not defined.").tap { |e| e.set_backtrace(caller)})
       else
         @hashr[name]
       end
