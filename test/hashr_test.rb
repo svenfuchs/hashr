@@ -5,58 +5,6 @@ class HashrTest < Minitest::Test
     Hashr.raise_missing_keys = false
   end
 
-  test 'initialize takes nil' do
-    Hashr.new(nil)
-  end
-
-  test 'initialize raises an ArgumentError when given a string' do
-    assert_raises(ArgumentError) { Hashr.new("foo") }
-  end
-
-  test 'method access on an existing key returns the value' do
-    assert_equal 'foo', Hashr.new(:foo => 'foo').foo
-  end
-
-  test 'method access on a non-existing key returns nil when raise_missing_keys is false' do
-    Hashr.raise_missing_keys = false
-    assert_nil Hashr.new(:foo => 'foo').bar
-  end
-
-  test 'method access on a non-existing key raises an IndexError when raise_missing_keys is true' do
-    Hashr.raise_missing_keys = true
-    assert_raises(IndexError) { Hashr.new(:foo => 'foo').bar }
-  end
-
-  test 'method access on an existing nested key returns the value' do
-    assert_equal 'bar', Hashr.new(:foo => { :bar => 'bar' }).foo.bar
-  end
-
-  test 'method access on a non-existing nested key returns nil when raise_missing_keys is false' do
-    Hashr.raise_missing_keys = false
-    assert_nil Hashr.new(:foo => { :bar => 'bar' }).foo.baz
-  end
-
-  test 'method access on a non-existing nested key raises an IndexError when raise_missing_keys is true' do
-    Hashr.raise_missing_keys = true
-    assert_raises(IndexError) { Hashr.new(:foo => { :bar => 'bar' }).foo.baz }
-  end
-
-  test 'method access with a question mark returns true if the key has a value' do
-    assert_equal true, Hashr.new(:foo => { :bar => 'bar' }).foo.bar?
-  end
-
-  test 'method access with a question mark returns false if the key does not have a value' do
-    assert_equal false, Hashr.new(:foo => { :bar => 'bar' }).foo.baz?
-  end
-
-  test 'hash access is indifferent about symbols/strings (string data given, symbol keys used)' do
-    assert_equal 'bar', Hashr.new('foo' => { 'bar' => 'bar' })[:foo][:bar]
-  end
-
-  test 'hash access is indifferent about symbols/strings (symbol data given, string keys used)' do
-    assert_equal 'bar', Hashr.new(:foo => { :bar => 'bar' })['foo']['bar']
-  end
-
   test 'mixing symbol and string keys in defaults and data' do
     Symbolized  = Class.new(Hashr) { define :foo => 'foo' }
     Stringified = Class.new(Hashr) { define 'foo' => 'foo' }
@@ -73,43 +21,6 @@ class HashrTest < Minitest::Test
     assert_equal 'foo', Symbolized.new('foo' => 'foo').foo
     assert_equal 'foo', Stringified.new('foo' => 'foo').foo
     assert_equal 'foo', NoDefault.new('foo' => 'foo').foo
-  end
-
-  test 'method assignment works' do
-    hashr = Hashr.new
-    hashr.foo = 'foo'
-    assert_equal 'foo', hashr.foo
-  end
-
-  test 'method using a string key works' do
-    hashr = Hashr.new
-    hashr['foo'] = 'foo'
-    assert_equal 'foo', hashr.foo
-  end
-
-  test 'using a symbol key works' do
-    hashr = Hashr.new
-    hashr[:foo] = 'foo'
-    assert_equal 'foo', hashr.foo
-  end
-
-  test 'respond_to? returns true if raise_missing_keys is off' do
-    Hashr.raise_missing_keys = false
-    hashr = Hashr.new
-    assert hashr.respond_to?(:foo)
-  end
-
-  test 'respond_to? returns false for missing keys if raise_missing_keys is on' do
-    Hashr.raise_missing_keys = true
-    hashr = Hashr.new
-    assert_equal false, hashr.respond_to?(:foo)
-  end
-
-  test 'respond_to? returns true for extant keys if raise_missing_keys is on' do
-    Hashr.raise_missing_keys = true
-    hashr = Hashr.new
-    hashr[:foo] = 'bar'
-    assert hashr.respond_to?(:foo)
   end
 
   test 'defining defaults' do

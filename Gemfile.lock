@@ -6,9 +6,20 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
-    minitest (5.3.4)
-    rake (0.9.2)
-    test_declarative (0.0.5)
+    diff-lcs (1.2.5)
+    rspec (3.3.0)
+      rspec-core (~> 3.3.0)
+      rspec-expectations (~> 3.3.0)
+      rspec-mocks (~> 3.3.0)
+    rspec-core (3.3.2)
+      rspec-support (~> 3.3.0)
+    rspec-expectations (3.3.1)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.3.0)
+    rspec-mocks (3.3.2)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.3.0)
+    rspec-support (3.3.0)
 
 PLATFORMS
   java
@@ -16,6 +27,7 @@ PLATFORMS
 
 DEPENDENCIES
   hashr!
-  minitest (>= 5.0.0)
-  rake
-  test_declarative (>= 0.0.2)
+  rspec
+
+BUNDLED WITH
+   1.10.6

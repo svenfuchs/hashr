@@ -16,21 +16,36 @@ It supports the following features:
 
 Directly use Hashr instances like this:
 
-    config = Hashr.new('foo' => { 'bar' => 'bar' })
+    config = Hashr.new(foo: { bar: 'bar' })
 
     config.foo?     # => true
-    config.foo      # => { :bar => 'bar' }
+    config.foo      # => { bar: 'bar' }
 
     config.foo.bar? # => true
     config.foo.bar  # => 'bar'
 
-    config.foo.bar = 'bar!'
-    config.foo.bar # => 'bar!'
+    config.foo.bar = 'bar'
+    config.foo.bar # => 'bar'
 
     config.foo.baz = 'baz'
     config.foo.baz # => 'baz'
 
-Be aware that by default missing keys won't raise an exception but instead behave like Hash access:
+Hash core methods are not available but assume you mean to look up keys with
+the same name:
+
+    config = Hashr.new(count: 1, key: 'key')
+    config.count # => 1
+    config.key   # => 'key'
+
+In order to check a hash stored on a certain key you can convert it to a Ruby
+Hash:
+
+    config = Hashr.new(count: 1, key: 'key')
+    config.to_h.count # => 2
+    config.to_h.key   # => raises ArgumentError: "wrong number of arguments (0 for 1)"
+
+By default missing keys won't raise an exception but instead behave like Hash
+access:
 
     config = Hashr.new
     config.foo? # => false
@@ -43,76 +58,6 @@ You can make Hashr raise an `IndexError` though like this:
     config.foo? # => false
     config.foo  # => raises an IndexError "Key :foo is not defined."
 
-You can also anonymously overwrite core Hash methods like this:
-
-    config = Hashr.new(:count => 3) do
-      def count
-        self[:count]
-      end
-    end
-    config.count # => 3
-
-And you can anonymously provide defaults like this:
-
-    data     = { :foo => 'foo' }
-    defaults = { :bar => 'bar' }
-    config   = Hashr.new(data, defaults)
-    config.foo # => 'foo'
-    config.bar # => 'bar'
-
-But you can obvioulsy also derive a custom class to define defaults and overwrite core Hash methods like this:
-
-    class Config < Hashr
-      define :foo => { :bar => 'bar' }
-
-      def count
-        self[:count]
-      end
-    end
-
-    config = Config.new
-    config.foo.bar # => 'bar'
-
-Include modules to nested hashes like this:
-
-    class Config < Hashr
-      module Boxes
-        def count
-          self[:count] # overwrites a Hash method to return the Hash's content here
-        end
-
-        def names
-          @names ||= (1..count).map { |num| "box-#{num}" }
-        end
-      end
-
-      define :boxes => { :count => 3, :_include => Boxes }
-    end
-
-    config = Config.new
-    config.boxes       # => { :count => 3 }
-    config.boxes.count # => 3
-    config.boxes.names # => ["box-1", "box-2", "box-3"]
-
-As overwriting Hash methods for method access to keys is a common pattern there's a short cut to it:
-
-    class Config < Hashr
-      define :_access => [:count, :key]
-    end
-
-    config = Config.new(:count => 3, :key => 'key')
-    config.count # => 3
-    config.key   # => 'key'
-
-Both `:_include` and `:_access` can be defined as defaults, i.e. so that they will be used on all nested hashes:
-
-    class Config < Hashr
-      default :_access => :key
-    end
-
-    config = Config.new(:key => 'key', :foo => { :key => 'foo.key' })
-    config.key     # => 'key'
-    config.foo.key # => 'foo.key'
 
 ## Environment defaults
 
@@ -123,7 +68,7 @@ Hashr includes a simple module that makes it easy to overwrite configuration def
 
       self.env_namespace = 'foo'
 
-      define :boxes => { :memory => '1024' }
+      define boxes: { memory: '1024' }
     end
 
 Now when an environment variable is defined then it will overwrite the default:
@@ -131,16 +76,6 @@ Now when an environment variable is defined then it will overwrite the default:
     ENV['FOO_BOXES_MEMORY'] = '2048'
     config = Config.new
     config.boxes.memory # => '2048'
-
-## Running the tests
-
-You can run the tests as follows:
-
-    # going through bundler
-    bundle exec rake
-
-    # using just ruby
-    ruby -rubygems -Ilib:test test/hashr_test.rb
 
 ## Other libraries
 
