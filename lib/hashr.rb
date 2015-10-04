@@ -68,16 +68,16 @@ class Hashr < BasicObject
     end
   end
 
+  def try(key)
+    defined?(key) ? self[key] : nil
+  end
+
   def to_h
     @data.inject({}) do |hash, (key, value)|
       hash.merge(key => value.respond_to?(:to_h) ? value.to_h : value)
     end
   end
   alias to_hash to_h
-
-  def inspect
-    "<Hashr #{@data.inspect}>"
-  end
 
   def ==(other)
     to_h == other.to_h if other.respond_to?(:to_h)
@@ -93,4 +93,8 @@ class Hashr < BasicObject
     consts.include?(const)
   end
   alias kind_of? is_a?
+
+  def inspect
+    "<Hashr #{@data.inspect}>"
+  end
 end
