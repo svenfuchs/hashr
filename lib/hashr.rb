@@ -53,7 +53,7 @@ class Hashr < BasicObject
     keys.map { |key| self[key] }
   end
 
-  def respond_to?(method)
+  def respond_to?(*args)
     true
   end
 
