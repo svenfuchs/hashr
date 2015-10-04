@@ -1,6 +1,6 @@
 class Hashr < BasicObject
   require 'hashr/core_ext/ruby/hash'
-  require 'hashr/env_defaults'
+  require 'hashr/env'
 
   class << self
     attr_reader :defaults
@@ -46,7 +46,7 @@ class Hashr < BasicObject
   end
 
   def []=(key, value)
-    @data.store(to_key(key), value.is_a?(::Hash) ? self.class.new(value, {}) : value)
+    @data.store(to_key(key), value.is_a?(::Hash) ? ::Hashr.new(value, {}) : value)
   end
 
   def values_at(*keys)
@@ -95,7 +95,7 @@ class Hashr < BasicObject
   alias kind_of? is_a?
 
   def inspect
-    "<Hashr #{@data.inspect}>"
+    "<#{self.class.name} #{@data.inspect}>"
   end
 
   private

@@ -88,7 +88,7 @@ defaults from environment variables:
 
 ```ruby
 class Config < Hashr
-  extend Hashr::EnvDefaults
+  extend Hashr::Env
 
   self.env_namespace = 'foo'
 
