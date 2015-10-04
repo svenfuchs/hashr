@@ -1,6 +1,11 @@
+language: ruby
+sudo: false
+
 rvm:
-  - 1.8.7
-  - 1.9.2
-  - 1.9.3
-  # - rbx
+  - 2.0
+  - 2.1
+  - 2.2
   - jruby
+  - jruby-9
+
+script: bundle exec rspec spec --color --format documentation --require spec_helper
