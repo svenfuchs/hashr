@@ -17,6 +17,10 @@ class Hashr < BasicObject
       @defaults = (self.defaults || {}).deep_merge(defaults || {})
     end
     alias :define :default
+
+    def const_missing(name)
+      Kernel.const_get(name)
+    end
   end
 
   attr_reader :class
@@ -31,8 +35,6 @@ class Hashr < BasicObject
     @data = defaults.deep_merge(data).inject({}) do |result, (key, value)|
       result.merge(key => value.is_a?(::Hash) ? ::Hashr.new(value, {}) : value)
     end
-
-    singleton_class.class_eval(&block) if block_given?
   end
 
   def defined?(key)

@@ -15,6 +15,15 @@ describe Hashr do
     it 'raises an ArgumentError when given a string' do
       expect { Hashr.new('foo') }.to raise_error(ArgumentError)
     end
+
+    it 'passing a block allows to define methods on the singleton class' do
+      hashr = Hashr.new(count: 5) do
+        def count
+          @data.count
+        end
+      end
+      expect(hashr.count).to eq(5)
+    end
   end
 
   describe 'defined?' do
@@ -247,14 +256,11 @@ describe Hashr do
     end
   end
 
-  describe 'passing a block' do
-    it 'allows to define methods on the singleton class' do
-      hashr = Hashr.new(count: 5) do
-        def count
-          @data.count
-        end
-      end
-      expect(hashr.count).to eq(5)
+  describe 'constant lookup' do
+    let(:klass) { Class.new(Hashr) { def env; ENV; end } }
+
+    it 'finds global consts' do
+      expect(klass.new.env).to eq(ENV)
     end
   end
 end
