@@ -38,15 +38,15 @@ class Hashr < BasicObject
   end
 
   def defined?(key)
-    @data.key?(key.respond_to?(:to_sym) ? key.to_sym : key)
+    @data.key?(to_key(key))
   end
 
   def [](key)
-    @data[key.to_s] || @data[key.to_sym]
+    @data[to_key(key)]
   end
 
   def []=(key, value)
-    @data.store(key, value.is_a?(::Hash) ? self.class.new(value, {}) : value)
+    @data.store(to_key(key), value.is_a?(::Hash) ? self.class.new(value, {}) : value)
   end
 
   def values_at(*keys)
@@ -69,7 +69,7 @@ class Hashr < BasicObject
   end
 
   def try(key)
-    defined?(key) ? self[key] : nil
+    defined?(key) ? self[key] : nil # TODO needs to look for to_h etc
   end
 
   def to_h
@@ -97,4 +97,10 @@ class Hashr < BasicObject
   def inspect
     "<Hashr #{@data.inspect}>"
   end
+
+  private
+
+    def to_key(key)
+      key.respond_to?(:to_sym) ? key.to_sym : key
+    end
 end
