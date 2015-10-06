@@ -1,5 +1,7 @@
+require 'hashr/core_ext/ruby/hash'
+
 class Hashr < BasicObject
-  require 'hashr/core_ext/ruby/hash'
+  require 'hashr/delegate/conditional'
   require 'hashr/env'
 
   class << self
