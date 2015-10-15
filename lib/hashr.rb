@@ -76,7 +76,7 @@ class Hashr < BasicObject
 
   def to_h
     @data.inject({}) do |hash, (key, value)|
-      hash.merge(key => value.respond_to?(:to_h) ? value.to_h : value)
+      hash.merge(key => value.is_a?(Hashr) || value.is_a?(Hash) ? value.to_h : value)
     end
   end
   alias to_hash to_h
