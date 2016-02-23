@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.version      = Hashr::VERSION
   s.authors      = ["Sven Fuchs"]
   s.email        = "me@svenfuchs.com"
+  s.license      = "MIT"
   s.homepage     = "http://github.com/svenfuchs/hashr"
   s.summary      = "Simple Hash extension to make working with nested hashes (e.g. for configuration) easier and less error-prone"
   s.description  = "#{s.summary}."
