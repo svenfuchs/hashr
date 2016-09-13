@@ -101,13 +101,14 @@ class Hashr < Hash
 
     def deep_hashrize(hash)
       hash.inject(TEMPLATE.dup) do |result, (key, value)|
-        case key.to_sym
+        k = key.respond_to?(:to_sym) ? key.to_sym : key
+        case k
         when :_include
           result.include_modules(value)
         when :_access
           result.include_accessors(value)
         else
-          result.store(key.to_sym, value.is_a?(Hash) ? deep_hashrize(value) : value)
+          result.store(k, value.is_a?(Hash) ? deep_hashrize(value) : value)
         end
         result
       end
