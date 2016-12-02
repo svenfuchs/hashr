@@ -1,5 +1,5 @@
 class Hashr
-  module Delegation
+  module Delegate
     module Hash
       METHODS = [
         :all?,
@@ -41,7 +41,7 @@ class Hashr
       ]
 
       METHODS.each do |name|
-        define_method(name) { |*args, &block| @data.send(name, *args, &block }
+        define_method(name) { |*args, &block| @data.send(name, *args, &block) }
       end
     end
   end

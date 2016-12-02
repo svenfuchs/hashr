@@ -99,7 +99,7 @@ describe Hashr do
       end
 
       it 'returns a nested hash' do
-        expect(Hashr.new(foo: { bar: 'bar' }).foo).to eq(bar: 'bar')
+        expect(Hashr.new(foo: { bar: 'bar' }).foo.to_h).to eq(bar: 'bar')
       end
 
       it 'returns a nested array' do
