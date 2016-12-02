@@ -9,6 +9,18 @@ class HashrTest < Minitest::Test
     Hashr.new(nil)
   end
 
+  test "initialize works with keys that cant be symbolized" do
+    hash   = { 0 => { 1 => 'foo' } }
+    result = Hashr.new(hash)
+    assert_equal hash, result
+  end
+
+  test "initialize works with nil keys" do
+    hash   = { nil => 'foo' }
+    result = Hashr.new(hash)
+    assert_equal hash, result
+  end
+
   test 'initialize raises an ArgumentError when given a string' do
     assert_raises(ArgumentError) { Hashr.new("foo") }
   end
