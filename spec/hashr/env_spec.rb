@@ -8,7 +8,9 @@ describe Hashr::Env do
       define string: 'string',
              hash:   { key: 'value' },
              array:  ['foo', 'bar'],
-             bool:   false
+             bool:   false,
+             int:    4,
+             float:  11.1
     end
   end
 
@@ -53,6 +55,45 @@ describe Hashr::Env do
       it 'returns an empty array for an empty string' do
         ENV['HASHR_ARRAY'] = ''
         expect(klass.new.array).to eq([])
+      end
+    end
+
+    describe 'to an int' do
+      it 'int given' do
+        ENV['HASHR_INT'] = '1'
+        expect(klass.new.int).to eq(1)
+      end
+
+      it 'errors for an empty string' do
+        ENV['HASHR_INT'] = ''
+        expect { klass.new.int }.to raise_error(ArgumentError)
+      end
+
+      it 'errors for a non-int' do
+        ENV['HASHR_INT'] = 'a'
+        expect { klass.new.int }.to raise_error(ArgumentError)
+      end
+    end
+
+    describe 'to a float' do
+      it 'float given' do
+        ENV['HASHR_FLOAT'] = '2.3'
+        expect(klass.new.float).to eq(2.3)
+      end
+
+      it 'int given' do
+        ENV['HASHR_FLOAT'] = '4'
+        expect(klass.new.float).to eq(4.0)
+      end
+
+      it 'errors for an empty string' do
+        ENV['HASHR_FLOAT'] = ''
+        expect { klass.new.float }.to raise_error(ArgumentError)
+      end
+
+      it 'errors for a non-float' do
+        ENV['HASHR_FLOAT'] = 'a'
+        expect { klass.new.float }.to raise_error(ArgumentError)
       end
     end
   end
