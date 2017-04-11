@@ -29,6 +29,8 @@ class Hashr
             value.respond_to?(:split) ? value.split(',') : Array(value)
           when true, false
             not FALSE.include?(value)
+          when Integer then Integer(value)
+          when Float then Float(value)
           else
             value
           end
