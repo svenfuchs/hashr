@@ -11,6 +11,7 @@ Gem::Specification.new do |s|
   s.homepage     = "http://github.com/svenfuchs/hashr"
   s.summary      = "Simple Hash extension to make working with nested hashes (e.g. for configuration) easier and less error-prone"
   s.description  = "#{s.summary}."
+  s.license      = "MIT"
 
   s.files        = Dir['{lib/**/*,spec/**/*,MIT-LICENSE,README.md,Gemfile}']
   s.platform     = Gem::Platform::RUBY
