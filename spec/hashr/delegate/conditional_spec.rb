@@ -1,3 +1,5 @@
+require 'spec_helper'
+
 describe Hashr::Delegate::Conditional do
   let(:klass) { Class.new(Hashr) { include Hashr::Delegate::Conditional } }
 

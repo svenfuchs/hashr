@@ -263,4 +263,16 @@ describe Hashr do
       expect(klass.new.env).to eq(ENV)
     end
   end
+
+  describe 'pry methods' do
+    let(:klass) { Class.new(Hashr) { default foo: { bar: { baz: 'baz' } } } }
+
+    example '#inspect' do
+      expect(klass.new.foo.inspect).to eq("<Hashr {:bar=><Hashr {:baz=>\"baz\"}>}>")
+    end
+
+    example '#to_s' do
+      expect(klass.new.foo.to_s).to eq("{:bar=>{:baz=>\"baz\"}}")
+    end
+  end
 end
