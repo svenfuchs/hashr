@@ -100,6 +100,10 @@ class Hashr < BasicObject
     "<#{self.class.name} #{@data.inspect}>"
   end
 
+  def to_s
+    to_h.to_s
+  end
+
   private
 
     def to_key(key)
